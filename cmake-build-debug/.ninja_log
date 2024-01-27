@@ -1,0 +1,15 @@
+# ninja log v5
+1	1464	1706351997608511678	CMakeFiles/don_t_make_me_laugh.dir/main.cpp.o	dc3f7331e6e05f95
+1	1470	1706351997610194646	CMakeFiles/don_t_make_me_laugh.dir/game-logic.cpp.o	6454115bc226bcea
+1470	1963	1706351998075783702	don_t_make_me_laugh	ed1fc524f9a2bcc8
+20	1433	1706352018340144518	CMakeFiles/don_t_make_me_laugh.dir/main.cpp.o	dc3f7331e6e05f95
+20	1529	1706352076813560837	CMakeFiles/don_t_make_me_laugh.dir/game-logic.cpp.o	6454115bc226bcea
+1529	1998	1706352077248866095	don_t_make_me_laugh	ed1fc524f9a2bcc8
+25	1558	1706352962710638192	CMakeFiles/don_t_make_me_laugh.dir/game-logic.cpp.o	6454115bc226bcea
+1559	1999	1706352963119748735	don_t_make_me_laugh	ed1fc524f9a2bcc8
+21	1455	1706352975783092126	CMakeFiles/don_t_make_me_laugh.dir/game-logic.cpp.o	6454115bc226bcea
+1455	1892	1706352976188923352	don_t_make_me_laugh	ed1fc524f9a2bcc8
+20	1486	1706352986060174823	CMakeFiles/don_t_make_me_laugh.dir/game-logic.cpp.o	6454115bc226bcea
+1487	1926	1706352986468258465	don_t_make_me_laugh	ed1fc524f9a2bcc8
+21	1477	1706352994303939893	CMakeFiles/don_t_make_me_laugh.dir/game-logic.cpp.o	6454115bc226bcea
+1478	1917	1706352994716219844	don_t_make_me_laugh	ed1fc524f9a2bcc8
