@@ -17,13 +17,17 @@ bool Game::GameInit()
                               SDL_WINDOW_SHOWN);
 
 //    Set up Font
-    font = TTF_OpenFont("../Fonts/Alle_Rg.ttf", 25);
+    font = TTF_OpenFont("../Fonts/Aller_Rg.ttf", 20);
 
     if (font == nullptr)
     {
         std::cout << "Failed to open fonts" << std::endl;
         return false;
     }
+
+//    Renderer
+
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     return true;
 }
@@ -58,5 +62,6 @@ Game::Game()
                     break;
             }
         }
+
     }
 }
