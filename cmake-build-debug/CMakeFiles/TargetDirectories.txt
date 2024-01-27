@@ -1,0 +1,3 @@
+/Users/chrisd/Desktop/don-t-make-me-laugh/cmake-build-debug/CMakeFiles/don_t_make_me_laugh.dir
+/Users/chrisd/Desktop/don-t-make-me-laugh/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/chrisd/Desktop/don-t-make-me-laugh/cmake-build-debug/CMakeFiles/rebuild_cache.dir
