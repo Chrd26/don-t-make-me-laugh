@@ -29,14 +29,25 @@ bool Game::GameInit()
 
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
+    if (renderer == nullptr)
+    {
+        std::cout << "Failed to create renderer" << std::endl;
+        return false;
+    }
+
     return true;
 }
 
-
+// Clean up
 Game::~Game()
 {
     TTF_CloseFont(font);
     SDL_DestroyWindow(window);
+    SDL_DestroyRenderer(renderer);
+
+    font = nullptr;
+    window = nullptr;
+    renderer = nullptr;
 }
 
 
