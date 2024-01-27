@@ -2,13 +2,21 @@
 #include <iostream>
 #include <SDL.h>
 #include <SDL_ttf.h>
+#include "player-header.h"
+#include "SDL_image.h"
+#include <string>
 
 #define screenWidth 1280
 #define screenHeight 720
 
 class Game
 {
-// Game State
+
+//  Player
+private:
+    Player player;
+
+//  Game State
 private:
     int currState = 0;
 
@@ -17,7 +25,7 @@ private:
         gamePlay,
         gamePaused
     };
-//    Game Components
+//  Game Components
 private:
     TTF_Font *font = nullptr;
     SDL_Window *window = nullptr;
@@ -28,11 +36,11 @@ public:
     Game();
     ~Game();
 
-//    Functionality
+//  Functionality
 private:
     bool GameInit();
 
-//    Menu
+//  Menu
 private:
     enum MenuSelections{
         startSelected = 0,

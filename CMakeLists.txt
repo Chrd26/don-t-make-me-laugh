@@ -5,7 +5,8 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_executable(don_t_make_me_laugh main.cpp
         game.h
-        game-logic.cpp)
+        game-logic.cpp
+        player-header.h)
 
 find_package(SDL2 CONFIG REQUIRED)
 target_link_libraries(don_t_make_me_laugh
@@ -17,3 +18,7 @@ target_link_libraries(don_t_make_me_laugh
 find_package(SDL2_ttf CONFIG REQUIRED)
 target_link_libraries(don_t_make_me_laugh
         PRIVATE $<IF:$<TARGET_EXISTS:SDL2_ttf::SDL2_ttf>,SDL2_ttf::SDL2_ttf,SDL2_ttf::SDL2_ttf-static>)
+
+find_package(SDL2_image CONFIG REQUIRED)
+target_link_libraries(don_t_make_me_laugh
+        PRIVATE $<IF:$<TARGET_EXISTS:SDL2_image::SDL2_image>,SDL2_image::SDL2_image,SDL2_image::SDL2_image-static>)

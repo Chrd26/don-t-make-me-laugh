@@ -1,7 +1,33 @@
 #include "game.h"
 
+void Player::StateSetter(int state)
+{
+    currentPlayerState = state;
+}
+
+void Player::PlayerAnimation()
+{
+    std::string extension = ".png";
+    std::string currentFrontIdleAnim = "../Graphics/Player/Idling Front/YOU_idling-";
+    std::string currentFrontWalkAnime = "../Graphics/Player/Walking Front/You_Walking_Ver2-";
+    std::string currentBackIdleAnim = "../Graphics/Player/Idling Back/YOU_Idling_Back";
+    std::string currentBackWalkAnim = "../Graphics/Player/Walking Back/YOU_Walking_Back-";
+    std::string currentSideIdleAnim = "../Graphics/Player/Idling Side/YOU_idling_Side-";
+    std::string currentSideWalkAnim = "Graphics/Player/Walking Side/YOU_Walking_Side-";
+
+    int frontIdleFrame = 1, frontWalkFrame = 1;
+    int sideIdleFrame = 1, sideWalkFrame = 1;
+    int backWalkFrame = 1;
+
+//    Use std::to string to convert to string
+//    Source: https://stackoverflow.com/questions/5590381/how-to-convert-int-to-string-in-c
+    currentFrontIdleAnim += std::to_string(frontIdleFrame) + extension;
+    std::cout << currentFrontIdleAnim << std::endl;
+}
+
 void Game::StartMenu()
 {
+
     menuFont = TTF_OpenFont("../Fonts/Aller_Rg.ttf", 35);
 
     SDL_SetRenderDrawColor(renderer,
@@ -26,8 +52,12 @@ void Game::StartMenu()
                             0,
                             0};
 
-    SDL_Color selectedColor = {0x00, 0xFF, 0x00};
-    SDL_Color unselectedColor = {0xFF, 0xFF, 0xFF};
+    SDL_Color selectedColor = {0x00,
+                               0xFF,
+                               0x00};
+    SDL_Color unselectedColor = {0xFF,
+                                 0xFF,
+                                 0xFF};
 
     switch (currMainMenuSelection)
     {
@@ -117,7 +147,7 @@ void Game::StartMenu()
 
 bool Game::GameInit()
 {
-    if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO) < 0 || TTF_Init() < 0)
+    if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO) < 0 || TTF_Init() < 0 || IMG_Init(IMG_INIT_PNG) < 0)
     {
         std::cout << "Failed to initialise SDL" << std::endl;
         return false;

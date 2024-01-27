@@ -261,6 +261,9 @@ PNG_PNG_INCLUDE_DIR:PATH=/Users/chrisd/.vcpkg-clion/jumping_physics_packages/ins
 //The directory containing a CMake configuration file for SDL2.
 SDL2_DIR:PATH=/Users/chrisd/.vcpkg-clion/jumping_physics_packages/installed/x64-osx/share/sdl2
 
+//The directory containing a CMake configuration file for SDL2_image.
+SDL2_image_DIR:PATH=/Users/chrisd/.vcpkg-clion/jumping_physics_packages/installed/x64-osx/share/SDL2_image
+
 //The directory containing a CMake configuration file for SDL2_ttf.
 SDL2_ttf_DIR:PATH=/Users/chrisd/.vcpkg-clion/jumping_physics_packages/installed/x64-osx/share/SDL2_ttf
 

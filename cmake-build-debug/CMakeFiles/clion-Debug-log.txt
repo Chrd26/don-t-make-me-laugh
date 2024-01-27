@@ -1,4 +1,4 @@
 /Applications/CLion.app/Contents/bin/cmake/mac/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/Applications/CLion.app/Contents/bin/ninja/mac/x64/ninja -DCMAKE_TOOLCHAIN_FILE=/Users/chrisd/.vcpkg-clion/jumping_physics_packages/scripts/buildsystems/vcpkg.cmake -G Ninja -S /Users/chrisd/Desktop/don-t-make-me-laugh -B /Users/chrisd/Desktop/don-t-make-me-laugh/cmake-build-debug
--- Configuring done (0.1s)
+-- Configuring done (0.2s)
 -- Generating done (0.0s)
 -- Build files have been written to: /Users/chrisd/Desktop/don-t-make-me-laugh/cmake-build-debug
