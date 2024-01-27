@@ -1,11 +1,13 @@
 #include "game.h"
 
-void Player::StateSetter(int state)
+template <>
+void Player<SDL_Surface , SDL_Texture >::StateSetter(int state)
 {
     currentPlayerState = state;
 }
 
-void Player::PlayerAnimation()
+template<>
+void Player<SDL_Surface, SDL_Texture >::PlayerAnimation(SDL_Surface *surface, SDL_Texture *texture)
 {
     std::string extension = ".png";
     std::string currentFrontIdleAnim = "../Graphics/Player/Idling Front/YOU_idling-";
@@ -23,6 +25,20 @@ void Player::PlayerAnimation()
 //    Source: https://stackoverflow.com/questions/5590381/how-to-convert-int-to-string-in-c
     currentFrontIdleAnim += std::to_string(frontIdleFrame) + extension;
     std::cout << currentFrontIdleAnim << std::endl;
+
+    switch (currentPlayerState)
+    {
+        case idleFront:
+            if (frontIdleCounter < 30)
+            {
+                frameSurface = IMG_Load(currentFrontIdleAnim.c_str());
+                frontIdleCounter++;
+                break;
+            }
+
+            break;
+
+    }
 }
 
 void Game::StartMenu()

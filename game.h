@@ -12,9 +12,9 @@
 class Game
 {
 
-//  Player
+//  Player Components
 private:
-    Player player;
+    Player<SDL_Surface, SDL_Texture> player();
 
 //  Game State
 private:
