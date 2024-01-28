@@ -27,7 +27,9 @@ void Player<SDL_Surface, SDL_Texture, SDL_Renderer, SDL_Rect >::LoadPlayerFrames
     {
 //      Use std::to string to convert to string
 //      Source: https://stackoverflow.com/questions/5590381/how-to-convert-int-to-string-in-c
-        std::string currentFrontIdleAnim = frontIdleAnimName + std::to_string(frontIdleFrame) + extension;
+        std::string currentFrontIdleAnim = frontIdleAnimName;
+        currentFrontIdleAnim.append(std::to_string(frontIdleFrame));
+        currentFrontIdleAnim.append(extension);
         frontAnimIdleFrameTexture[frontIdleFrame] = IMG_LoadTexture(renderer, currentFrontIdleAnim.c_str());
         frontIdleFrame++;
     }
@@ -35,7 +37,9 @@ void Player<SDL_Surface, SDL_Texture, SDL_Renderer, SDL_Rect >::LoadPlayerFrames
 //     Load Front Anim Walk
     while (frontWalkFrame < 18)
     {
-        std::string currentFrontWalkAnim = frontWalkAnimName + std::to_string(frontWalkFrame) + extension;
+        std::string currentFrontWalkAnim = frontWalkAnimName;
+        currentFrontWalkAnim.append(std::to_string(frontWalkFrame));
+        currentFrontWalkAnim.append(extension);
         frontAnimWalkFrameTexture[frontWalkFrame] = IMG_LoadTexture(renderer, currentFrontWalkAnim.c_str());
         frontWalkFrame++;
     }
@@ -46,7 +50,9 @@ void Player<SDL_Surface, SDL_Texture, SDL_Renderer, SDL_Rect >::LoadPlayerFrames
 //    Load Back Anim Walk
     while (backWalkFrame < 5)
     {
-        std::string currentBackWalkAnim = backWalkAnimName + std::to_string(backWalkFrame) + extension;
+        std::string currentBackWalkAnim = backWalkAnimName;
+        currentBackWalkAnim.append(std::to_string(backWalkFrame));
+        currentBackWalkAnim.append(extension);
         backAnimWalkFrameTexture[backWalkFrame] = IMG_LoadTexture(renderer, currentBackWalkAnim.c_str());
         backWalkFrame++;
     }
@@ -54,7 +60,9 @@ void Player<SDL_Surface, SDL_Texture, SDL_Renderer, SDL_Rect >::LoadPlayerFrames
 //    Load Side Anim Idle
     while (sideIdleFrame < 10)
     {
-        std::string currentSideIdleAnim = sideIdleAnimName + std::to_string(sideIdleFrame) + extension;
+        std::string currentSideIdleAnim = sideIdleAnimName;
+        currentSideIdleAnim.append(std::to_string(sideIdleFrame));
+        currentSideIdleAnim.append(extension);
         sideAnimIdleFrameTexture[sideIdleFrame] = IMG_LoadTexture(renderer, currentSideIdleAnim.c_str());
         sideIdleFrame++;
     }
@@ -62,16 +70,19 @@ void Player<SDL_Surface, SDL_Texture, SDL_Renderer, SDL_Rect >::LoadPlayerFrames
 //    Load Side Anim Walk
     while (sideWalkFrame < 19)
     {
-        std::string currentSideWalkAnim = sideWalkAnimName + std::to_string(sideWalkFrame) + extension;
+        std::string currentSideWalkAnim = sideWalkAnimName;
+        currentSideWalkAnim.append(std::to_string(sideWalkFrame));
+        currentSideWalkAnim.append(extension);
         sideAnimIdleFrameTexture[sideWalkFrame] = IMG_LoadTexture(renderer, currentSideWalkAnim.c_str());
+        sideWalkFrame++;
     }
 
+    areTexturesLoaded = true;
 }
 
 template<>
 void Player<SDL_Surface, SDL_Texture, SDL_Renderer, SDL_Rect>::PlayerAnimation(SDL_Surface *surface, SDL_Texture *texture)
 {
-
     switch (currentPlayerState)
     {
         case idleFront:
@@ -104,28 +115,78 @@ void Player<SDL_Surface, SDL_Texture, SDL_Renderer, SDL_Rect>::PlayerAnimation(S
     }
 }
 
+void Game::LoadMainMenuBackground()
+{
+    int currentFrame = 1, counter = 0;
+
+    while (counter < 17)
+    {
+        std::string extension = ".png";
+        std::string frameName = "../Graphics/Main Menu Background/Main_Menu_BG_-";
+        frameName.append(std::to_string(currentFrame));
+        frameName.append(extension);
+
+        menuBG[counter] = IMG_Load(frameName.c_str());
+        counter++;
+        currentFrame++;
+        hasMainMenuBGLoaded = true;
+
+    }
+}
+
+void Game::ShowMenuBackground(int frame)
+{
+    SDL_Texture *currentFrame = SDL_CreateTextureFromSurface(renderer, menuBG[frame]);
+    SDL_Rect bgRect = {0,
+                       0,
+                       menuBG[frame]->w,
+                       menuBG[frame]->h};
+
+    SDL_RenderCopy(renderer,
+                   currentFrame,
+                   nullptr,
+                   &bgRect);
+
+    SDL_DestroyTexture(currentFrame);
+    currentFrame = nullptr;
+}
+
 void Game::StartMenu()
 {
 
     menuFont = TTF_OpenFont("../Fonts/Aller_Rg.ttf", 35);
+
+    SDL_Rect menuHolder = {static_cast<int>((float)screenWidth * 0.1f),
+                           static_cast<int>((float)screenHeight * 0.8f),
+                           300,
+                           100};
+
+    SDL_Rect menuHolderFill = {static_cast<int>((float)screenWidth * 0.1f),
+                              static_cast<int>((float)screenHeight * 0.8f),
+                              300,
+                              100};
+
+    SDL_SetRenderDrawColor(renderer,
+                           0x00,
+                           0x00,
+                           0x00,
+                           0xFF);
+    SDL_RenderFillRect(renderer,
+                       &menuHolderFill);
 
     SDL_SetRenderDrawColor(renderer,
                            0xFF,
                            0xFF,
                            0xFF,
                            0xFF);
-    SDL_Rect menuHolder = {static_cast<int>((float)screenWidth * 0.1f),
-                           static_cast<int>((float)screenHeight * 0.8f),
-                           300,
-                           100};
     SDL_RenderDrawRect(renderer,
                        &menuHolder);
 
+    SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
     SDL_Rect startButton = {static_cast<int>((float)screenWidth * 0.12f),
                             static_cast<int>((float)screenHeight * 0.85f),
                             0,
                             0};
-
     SDL_Rect exitButton = {static_cast<int>((float)screenWidth * 0.25f),
                             static_cast<int>((float)screenHeight * 0.85f),
                             0,
@@ -307,12 +368,42 @@ Game::Game()
                                 break;
                             }
 
+                            if (currState == gamePlay)
+                            {
+                                break;
+                            }
+
+                            break;
+
                         case SDLK_RIGHT:
                             if (currState == mainMenu)
                             {
                                 currMainMenuSelection = exitSelected;
                                 break;
                             }
+
+                            if (currState == gamePlay)
+                            {
+                                break;
+                            }
+
+                            break;
+
+                        case SDLK_UP:
+                            if (currState == gamePlay)
+                            {
+                                break;
+                            }
+
+                            break;
+
+                        case SDLK_DOWN:
+                            if (currState == gamePlay)
+                            {
+                                break;
+                            }
+
+                            break;
 
                         case SDLK_RETURN:
                             if (currState == mainMenu && currMainMenuSelection == exitSelected)
@@ -355,8 +446,37 @@ Game::Game()
         switch (currState)
         {
             case mainMenu:
-                StartMenu();
-                break;
+
+                if (!hasMainMenuBGLoaded)
+                {
+                    LoadMainMenuBackground();
+                }
+
+                if (currentBGFrame < 16)
+                {
+                    ShowMenuBackground(currentBGFrame);
+
+                    if (nextFrameClock == 20)
+                    {
+                        currentBGFrame++;
+                        nextFrameClock = 0;
+                    }else
+                    {
+                        nextFrameClock += 1;
+                    }
+
+                    StartMenu();
+
+                    break;
+                }else
+                {
+                    currentBGFrame = 0;
+                    ShowMenuBackground(currentBGFrame);
+                    currentBGFrame++;
+                    StartMenu();
+                    break;
+                }
+
 
             case gamePlay:
                 break;

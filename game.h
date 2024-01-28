@@ -51,13 +51,16 @@ private:
     };
 
     int currMainMenuSelection = startSelected;
-    SDL_Surface *startGameSurface = nullptr;
-    SDL_Texture *startGameTexture = nullptr;
-    SDL_Surface *exitGameSurface = nullptr;
-    SDL_Texture *exitGameTexture = nullptr;
+    SDL_Surface *startGameSurface = nullptr, *exitGameSurface = nullptr;
+    SDL_Texture *startGameTexture = nullptr, *exitGameTexture = nullptr;
     TTF_Font *menuFont = nullptr;
+    std::array<SDL_Surface*, 16> menuBG;
+    bool hasMainMenuBGLoaded = false;
+    int currentBGFrame = 0;
+    int nextFrameClock = 0;
 
     void StartMenu();
-    void ShowMenuBackground();
+    void ShowMenuBackground(int frame);
+    void LoadMainMenuBackground();
 
 };
