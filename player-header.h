@@ -29,22 +29,20 @@ private:
     std::array <S*, 18> sideAnimWalkFrameSurface;
     T *frameTexture = nullptr;
     int animClock = 0;
-    int frontIdleCounter = 0;
+    //int frontIdleCounter = 0;
     int curAnim = 0;
-    bool areTexturesLoaded = false;
 
 public:
-    float playerX, playerY;
+    float playerX = 0, playerY = 0;
+    bool areTexturesLoaded = false;
 
 public:
     virtual void PlayerAnimation(R *renderer);
     virtual void StateSetter(int state);
     virtual void LoadPlayerFrames(R *renderer);
+    //virtual void unloadPlayerFrames();
 
 //     This is a static function because it is
 //      already defined, use static to declare it
-    static bool hasLoadedTextures()
-    {
-        return hasLoadedTextures;
-    }
+    bool hasLoadedTextures() const;
 };

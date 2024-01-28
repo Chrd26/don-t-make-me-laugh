@@ -1,6 +1,12 @@
 #include "game.h"
 
 template<>
+bool Player<SDL_Surface, SDL_Texture, SDL_Renderer>::hasLoadedTextures() const
+{
+    return areTexturesLoaded;
+}
+
+template<>
 void Player<SDL_Surface, SDL_Texture, SDL_Renderer>::StateSetter(int state)
 {
     currentPlayerState = state;
@@ -21,7 +27,6 @@ void Player<SDL_Surface, SDL_Texture, SDL_Renderer>::LoadPlayerFrames(SDL_Render
     int sideIdleFrame = 1, sideWalkFrame = 1;
     int backWalkFrame = 1;
     int arrCounter = 0;
-
 
 //      Load Front Anim Idle
     while (frontIdleFrame < 12)
@@ -98,55 +103,66 @@ void Player<SDL_Surface, SDL_Texture, SDL_Renderer>::LoadPlayerFrames(SDL_Render
 template<>
 void Player<SDL_Surface, SDL_Texture, SDL_Renderer>::PlayerAnimation(SDL_Renderer *renderer)
 {
+    SDL_Rect frameHolder;
     switch (currentPlayerState)
     {
         case idleFront:
-            if (curAnim >= frontAnimIdleFrameSurface.size())
-            {
-                frontIdleCounter = 0;
+
+            if (animClock < 500) {
+                frameHolder = {static_cast<int>(playerX),
+                               static_cast<int>(playerY),
+                               static_cast<int>(frontAnimIdleFrameSurface[curAnim]->w * 0.2f),
+                               static_cast<int>(frontAnimIdleFrameSurface[curAnim]->h * 0.2f)};
+
+                frameTexture = SDL_CreateTextureFromSurface(renderer, frontAnimIdleFrameSurface[curAnim]);
+
+                SDL_RenderCopy(renderer,
+                               frameTexture,
+                               nullptr,
+                               &frameHolder);
+                animClock++;
+                std::cout << animClock << std::endl;
                 break;
-            }
+            }else{
 
-            if (frontIdleCounter < 29 && animClock == 15)
-            {
-                frontAnimIdleFrameSurface[curAnim]->w = static_cast<int>(frontAnimIdleFrameSurface[0]->w * 0.2f);
-                frontAnimIdleFrameSurface[curAnim]->h = static_cast<int>(frontAnimIdleFrameSurface[0]->h * 0.2f);
-                SDL_Rect frameHolder = {static_cast<int>(playerX),
-                                        static_cast<int>(playerY),
-                                        frontAnimIdleFrameSurface[curAnim]->w,
-                                        frontAnimIdleFrameSurface[curAnim]->h
-                                        };
+                if (curAnim >= frontAnimIdleFrameSurface.size())
+                {
+                    animClock = 0;
+                    curAnim = 0;
+                }
 
-                frameTexture = SDL_CreateTextureFromSurface(renderer, frontAnimIdleFrameSurface[0]);
+                if (animClock < 520)
+                {
+                    frameHolder = {static_cast<int>(playerX),
+                                   static_cast<int>(playerY),
+                                   static_cast<int>(frontAnimIdleFrameSurface[curAnim]->w * 0.2f),
+                                   static_cast<int>(frontAnimIdleFrameSurface[curAnim]->h * 0.2f)};
+
+                    frameTexture = SDL_CreateTextureFromSurface(renderer, frontAnimIdleFrameSurface[curAnim]);
+
+                    SDL_RenderCopy(renderer,
+                                   frameTexture,
+                                   nullptr,
+                                   &frameHolder);
+                    animClock++;
+                    break;
+                }
+
+                frameHolder = {static_cast<int>(playerX),
+                               static_cast<int>(playerY),
+                               static_cast<int>(frontAnimIdleFrameSurface[curAnim]->w * 0.2f),
+                               static_cast<int>(frontAnimIdleFrameSurface[curAnim]->h * 0.2f)};
+
+                frameTexture = SDL_CreateTextureFromSurface(renderer, frontAnimIdleFrameSurface[curAnim]);
 
                 SDL_RenderCopy(renderer,
                                frameTexture,
                                nullptr,
                                &frameHolder);
-                animClock = 0;
-                frontIdleCounter++;
-            }else if (animClock == 15)
-            {
-                frontAnimIdleFrameSurface[curAnim]->w = static_cast<int>(frontAnimIdleFrameSurface[0]->w * 0.2f);
-                frontAnimIdleFrameSurface[curAnim]->h = static_cast<int>(frontAnimIdleFrameSurface[0]->h * 0.2f);
-                SDL_Rect frameHolder = {static_cast<int>(playerX),
-                                        static_cast<int>(playerY),
-                                        frontAnimIdleFrameSurface[curAnim]->w,
-                                        frontAnimIdleFrameSurface[curAnim]->h
-                };
-
-                frameTexture = SDL_CreateTextureFromSurface(renderer, frontAnimIdleFrameSurface[0]);
-                SDL_DestroyTexture(frameTexture);
-                SDL_RenderCopy(renderer,
-                               frameTexture,
-                               nullptr,
-                               &frameHolder);
-                animClock = 0;
+                animClock = 500;
+                animClock++;
+                curAnim++;
             }
-
-
-            curAnim++;
-            animClock++;
             break;
 
         case walkFront:
@@ -414,9 +430,9 @@ Game::Game()
     bool quit = false;
     SDL_Event eventHandler;
 
-
     while (!quit)
     {
+        SDL_PumpEvents();
         while(SDL_PollEvent(&eventHandler) != 0)
         {
             switch (eventHandler.type)
@@ -438,7 +454,7 @@ Game::Game()
 
                             if (currState == gamePlay)
                             {
-                                player.playerX -= 0.5f;
+                                player.playerX -= 10.0f;
                                 break;
                             }
 
@@ -453,14 +469,14 @@ Game::Game()
 
                             if (currState == gamePlay)
                             {
-                                player.playerX += 0.5f;
+                                player.playerX += 10.0f;
                                 break;
                             }
 
                         case SDLK_UP:
                             if (currState == gamePlay)
                             {
-                                player.playerY -= 0.5f;
+                                player.playerY -= 10.0f;
                                 break;
                             }
 
@@ -469,7 +485,7 @@ Game::Game()
                         case SDLK_DOWN:
                             if (currState == gamePlay)
                             {
-                                player.playerY += 0.5f;
+                                player.playerY += 10.0f;
                                 break;
                             }
 
@@ -486,6 +502,9 @@ Game::Game()
                             {
                                 currState = gamePlay;
                                 UnloadMainMenuElements();
+                                player.playerX = 200;
+                                player.playerY = 50;
+                                player.LoadPlayerFrames(renderer);
                                 break;
                             }
 
@@ -500,6 +519,10 @@ Game::Game()
                             {
                                 currState = gamePlay;
                                 UnloadMainMenuElements();
+                                player.playerX = screenWidth/2;
+                                player.playerY = screenHeight/2;
+                                std::cin.get();
+
                                 break;
                             }
                     }
