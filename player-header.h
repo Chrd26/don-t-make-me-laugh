@@ -30,8 +30,11 @@ private:
     T *frameTexture = nullptr;
     int animClock = 0;
     int frontIdleCounter = 0;
+    int curAnim = 0;
     bool areTexturesLoaded = false;
-    int playerX, playerY;
+
+public:
+    float playerX, playerY;
 
 public:
     virtual void PlayerAnimation(R *renderer);

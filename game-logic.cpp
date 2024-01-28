@@ -101,14 +101,20 @@ void Player<SDL_Surface, SDL_Texture, SDL_Renderer>::PlayerAnimation(SDL_Rendere
     switch (currentPlayerState)
     {
         case idleFront:
-            if (frontIdleCounter < 30 && animClock == 15)
+            if (curAnim >= frontAnimIdleFrameSurface.size())
             {
-                frontAnimIdleFrameSurface[0]->w = static_cast<int>(frontAnimIdleFrameSurface[0]->w * 0.2f);
-                frontAnimIdleFrameSurface[0]->h = static_cast<int>(frontAnimIdleFrameSurface[0]->h * 0.2f);
-                SDL_Rect frameHolder = {playerX,
-                                        playerY,
-                                        frontAnimIdleFrameSurface[0]->w,
-                                        frontAnimIdleFrameSurface[0]->h
+                frontIdleCounter = 0;
+                break;
+            }
+
+            if (frontIdleCounter < 29 && animClock == 15)
+            {
+                frontAnimIdleFrameSurface[curAnim]->w = static_cast<int>(frontAnimIdleFrameSurface[0]->w * 0.2f);
+                frontAnimIdleFrameSurface[curAnim]->h = static_cast<int>(frontAnimIdleFrameSurface[0]->h * 0.2f);
+                SDL_Rect frameHolder = {static_cast<int>(playerX),
+                                        static_cast<int>(playerY),
+                                        frontAnimIdleFrameSurface[curAnim]->w,
+                                        frontAnimIdleFrameSurface[curAnim]->h
                                         };
 
                 frameTexture = SDL_CreateTextureFromSurface(renderer, frontAnimIdleFrameSurface[0]);
@@ -119,8 +125,27 @@ void Player<SDL_Surface, SDL_Texture, SDL_Renderer>::PlayerAnimation(SDL_Rendere
                                &frameHolder);
                 animClock = 0;
                 frontIdleCounter++;
+            }else if (animClock == 15)
+            {
+                frontAnimIdleFrameSurface[curAnim]->w = static_cast<int>(frontAnimIdleFrameSurface[0]->w * 0.2f);
+                frontAnimIdleFrameSurface[curAnim]->h = static_cast<int>(frontAnimIdleFrameSurface[0]->h * 0.2f);
+                SDL_Rect frameHolder = {static_cast<int>(playerX),
+                                        static_cast<int>(playerY),
+                                        frontAnimIdleFrameSurface[curAnim]->w,
+                                        frontAnimIdleFrameSurface[curAnim]->h
+                };
+
+                frameTexture = SDL_CreateTextureFromSurface(renderer, frontAnimIdleFrameSurface[0]);
+                SDL_DestroyTexture(frameTexture);
+                SDL_RenderCopy(renderer,
+                               frameTexture,
+                               nullptr,
+                               &frameHolder);
+                animClock = 0;
             }
 
+
+            curAnim++;
             animClock++;
             break;
 
@@ -162,7 +187,6 @@ void Game::LoadMainMenuBackground()
         counter++;
         currentFrame++;
         hasMainMenuBGLoaded = true;
-
     }
 }
 
@@ -414,6 +438,7 @@ Game::Game()
 
                             if (currState == gamePlay)
                             {
+                                player.playerX -= 0.5f;
                                 break;
                             }
 
@@ -428,12 +453,14 @@ Game::Game()
 
                             if (currState == gamePlay)
                             {
+                                player.playerX += 0.5f;
                                 break;
                             }
 
                         case SDLK_UP:
                             if (currState == gamePlay)
                             {
+                                player.playerY -= 0.5f;
                                 break;
                             }
 
@@ -442,6 +469,7 @@ Game::Game()
                         case SDLK_DOWN:
                             if (currState == gamePlay)
                             {
+                                player.playerY += 0.5f;
                                 break;
                             }
 
@@ -525,7 +553,7 @@ Game::Game()
             case gamePlay:
                 if (player.hasLoadedTextures())
                 {
-
+                    player.PlayerAnimation(renderer);
                 }
                 break;
 
