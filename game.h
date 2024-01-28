@@ -14,7 +14,10 @@ class Game
 
 //  Player Components
 private:
-    Player<SDL_Surface, SDL_Texture> player();
+    Player<SDL_Surface,
+        SDL_Texture,
+        SDL_Renderer,
+        SDL_Rect> player();
 
 //  Game State
 private:
@@ -55,5 +58,6 @@ private:
     TTF_Font *menuFont = nullptr;
 
     void StartMenu();
+    void ShowMenuBackground();
 
 };

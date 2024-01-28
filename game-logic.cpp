@@ -1,43 +1,106 @@
 #include "game.h"
 
-template <>
-void Player<SDL_Surface , SDL_Texture >::StateSetter(int state)
+template<>
+void Player<SDL_Surface, SDL_Texture, SDL_Renderer, SDL_Rect >::StateSetter(int state)
 {
     currentPlayerState = state;
 }
 
 template<>
-void Player<SDL_Surface, SDL_Texture >::PlayerAnimation(SDL_Surface *surface, SDL_Texture *texture)
+void Player<SDL_Surface, SDL_Texture, SDL_Renderer, SDL_Rect >::LoadPlayerFrames(SDL_Renderer *renderer)
 {
     std::string extension = ".png";
-    std::string currentFrontIdleAnim = "../Graphics/Player/Idling Front/YOU_idling-";
-    std::string currentFrontWalkAnime = "../Graphics/Player/Walking Front/You_Walking_Ver2-";
-    std::string currentBackIdleAnim = "../Graphics/Player/Idling Back/YOU_Idling_Back";
-    std::string currentBackWalkAnim = "../Graphics/Player/Walking Back/YOU_Walking_Back-";
-    std::string currentSideIdleAnim = "../Graphics/Player/Idling Side/YOU_idling_Side-";
-    std::string currentSideWalkAnim = "Graphics/Player/Walking Side/YOU_Walking_Side-";
+    std::string frontIdleAnimName = "../Graphics/Player/Idling Front/YOU_idling-";
+    std::string frontWalkAnimName = "../Graphics/Player/Walking Front/You_Walking_Ver2-";
+    std::string backIdleAnimName = "../Graphics/Player/Idling Back/YOU_Idling_Back.png";
+    std::string backWalkAnimName = "../Graphics/Player/Walking Back/YOU_Walking_Back-";
+    std::string sideIdleAnimName = "../Graphics/Player/Idling Side/YOU_idling_Side-";
+    std::string sideWalkAnimName = "Graphics/Player/Walking Side/YOU_Walking_Side-";
 
     int frontIdleFrame = 1, frontWalkFrame = 1;
     int sideIdleFrame = 1, sideWalkFrame = 1;
     int backWalkFrame = 1;
 
-//    Use std::to string to convert to string
-//    Source: https://stackoverflow.com/questions/5590381/how-to-convert-int-to-string-in-c
-    currentFrontIdleAnim += std::to_string(frontIdleFrame) + extension;
-    std::cout << currentFrontIdleAnim << std::endl;
+
+//      Load Front Anim Idle
+    while (frontIdleFrame < 12)
+    {
+//      Use std::to string to convert to string
+//      Source: https://stackoverflow.com/questions/5590381/how-to-convert-int-to-string-in-c
+        std::string currentFrontIdleAnim = frontIdleAnimName + std::to_string(frontIdleFrame) + extension;
+        frontAnimIdleFrameTexture[frontIdleFrame] = IMG_LoadTexture(renderer, currentFrontIdleAnim.c_str());
+        frontIdleFrame++;
+    }
+
+//     Load Front Anim Walk
+    while (frontWalkFrame < 18)
+    {
+        std::string currentFrontWalkAnim = frontWalkAnimName + std::to_string(frontWalkFrame) + extension;
+        frontAnimWalkFrameTexture[frontWalkFrame] = IMG_LoadTexture(renderer, currentFrontWalkAnim.c_str());
+        frontWalkFrame++;
+    }
+
+//    Load Back Anim Idle
+    backAnimIdleFrameTexture = IMG_LoadTexture(renderer, backIdleAnimName.c_str());
+
+//    Load Back Anim Walk
+    while (backWalkFrame < 5)
+    {
+        std::string currentBackWalkAnim = backWalkAnimName + std::to_string(backWalkFrame) + extension;
+        backAnimWalkFrameTexture[backWalkFrame] = IMG_LoadTexture(renderer, currentBackWalkAnim.c_str());
+        backWalkFrame++;
+    }
+
+//    Load Side Anim Idle
+    while (sideIdleFrame < 10)
+    {
+        std::string currentSideIdleAnim = sideIdleAnimName + std::to_string(sideIdleFrame) + extension;
+        sideAnimIdleFrameTexture[sideIdleFrame] = IMG_LoadTexture(renderer, currentSideIdleAnim.c_str());
+        sideIdleFrame++;
+    }
+
+//    Load Side Anim Walk
+    while (sideWalkFrame < 19)
+    {
+        std::string currentSideWalkAnim = sideWalkAnimName + std::to_string(sideWalkFrame) + extension;
+        sideAnimIdleFrameTexture[sideWalkFrame] = IMG_LoadTexture(renderer, currentSideWalkAnim.c_str());
+    }
+
+}
+
+template<>
+void Player<SDL_Surface, SDL_Texture, SDL_Renderer, SDL_Rect>::PlayerAnimation(SDL_Surface *surface, SDL_Texture *texture)
+{
 
     switch (currentPlayerState)
     {
         case idleFront:
             if (frontIdleCounter < 30)
             {
-                frameSurface = IMG_Load(currentFrontIdleAnim.c_str());
-                frontIdleCounter++;
-                break;
-            }
 
+            }
             break;
 
+        case walkFront:
+            break;
+
+        case idleSideLeft:
+            break;
+
+        case walkSideLeft:
+            break;
+
+        case idleSideRight:
+            break;
+
+        case walkSideRight:
+            break;
+
+        case idleBack:
+            break;
+
+        case walkBack:
+            break;
     }
 }
 
