@@ -430,9 +430,11 @@ Game::Game()
     bool quit = false;
     SDL_Event eventHandler;
 
+//    Use keyboard events to make proper movement
+//    Read here: https://www.appsloveworld.com/cplus/100/134/sdl-2-0-key-repeat-and-delay
+
     while (!quit)
     {
-        SDL_PumpEvents();
         while(SDL_PollEvent(&eventHandler) != 0)
         {
             switch (eventHandler.type)
