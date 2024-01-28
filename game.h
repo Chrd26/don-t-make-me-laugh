@@ -14,10 +14,7 @@ class Game
 
 //  Player Components
 private:
-    Player<SDL_Surface,
-        SDL_Texture,
-        SDL_Renderer,
-        SDL_Rect> player();
+    Player<SDL_Surface, SDL_Texture, SDL_Renderer> player;
 
 //  Game State
 private:
@@ -62,5 +59,6 @@ private:
     void StartMenu();
     void ShowMenuBackground(int frame);
     void LoadMainMenuBackground();
+    void UnloadMainMenuElements();
 
 };

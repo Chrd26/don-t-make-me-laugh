@@ -1,6 +1,6 @@
 #pragma once
 
-template<typename S,typename T, typename  R, typename Rect>
+template<typename S,typename T, typename  R>
 class Player
 {
 //    Player state
@@ -21,22 +21,26 @@ private:
 //  Player components
 private:
     int currentPlayerState;
-    std::array<T*, 11> frontAnimIdleFrameTexture = nullptr;
-    std::array<T*, 17> frontAnimWalkFrameTexture = nullptr;
+    std::array<S*, 11> frontAnimIdleFrameSurface;
+    std::array<S*, 17> frontAnimWalkFrameSurface;
     T* backAnimIdleFrameTexture = nullptr;
-    std::array <T*, 4> backAnimWalkFrameTexture;
-    std::array <T*, 9> sideAnimIdleFrameTexture;
-    std::array <T*, 18> sideAnimWalkFrameTexture;
-    T *frameTexture;
+    std::array <S*, 4> backAnimWalkFrameSurface;
+    std::array <S*, 9> sideAnimIdleFrameSurface;
+    std::array <S*, 18> sideAnimWalkFrameSurface;
+    T *frameTexture = nullptr;
+    int animClock = 0;
     int frontIdleCounter = 0;
     bool areTexturesLoaded = false;
+    int playerX, playerY;
 
 public:
-    virtual void PlayerAnimation(S *surface, T *texture);
+    virtual void PlayerAnimation(R *renderer);
     virtual void StateSetter(int state);
     virtual void LoadPlayerFrames(R *renderer);
-    
-    bool hasLoadedTextures()
+
+//     This is a static function because it is
+//      already defined, use static to declare it
+    static bool hasLoadedTextures()
     {
         return hasLoadedTextures;
     }

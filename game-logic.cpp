@@ -1,13 +1,13 @@
 #include "game.h"
 
 template<>
-void Player<SDL_Surface, SDL_Texture, SDL_Renderer, SDL_Rect >::StateSetter(int state)
+void Player<SDL_Surface, SDL_Texture, SDL_Renderer>::StateSetter(int state)
 {
     currentPlayerState = state;
 }
 
 template<>
-void Player<SDL_Surface, SDL_Texture, SDL_Renderer, SDL_Rect >::LoadPlayerFrames(SDL_Renderer *renderer)
+void Player<SDL_Surface, SDL_Texture, SDL_Renderer>::LoadPlayerFrames(SDL_Renderer *renderer)
 {
     std::string extension = ".png";
     std::string frontIdleAnimName = "../Graphics/Player/Idling Front/YOU_idling-";
@@ -20,6 +20,7 @@ void Player<SDL_Surface, SDL_Texture, SDL_Renderer, SDL_Rect >::LoadPlayerFrames
     int frontIdleFrame = 1, frontWalkFrame = 1;
     int sideIdleFrame = 1, sideWalkFrame = 1;
     int backWalkFrame = 1;
+    int arrCounter = 0;
 
 
 //      Load Front Anim Idle
@@ -30,9 +31,12 @@ void Player<SDL_Surface, SDL_Texture, SDL_Renderer, SDL_Rect >::LoadPlayerFrames
         std::string currentFrontIdleAnim = frontIdleAnimName;
         currentFrontIdleAnim.append(std::to_string(frontIdleFrame));
         currentFrontIdleAnim.append(extension);
-        frontAnimIdleFrameTexture[frontIdleFrame] = IMG_LoadTexture(renderer, currentFrontIdleAnim.c_str());
+        frontAnimIdleFrameSurface[arrCounter] = IMG_Load(currentFrontIdleAnim.c_str());
         frontIdleFrame++;
+        arrCounter++;
     }
+
+    arrCounter = 0;
 
 //     Load Front Anim Walk
     while (frontWalkFrame < 18)
@@ -40,9 +44,12 @@ void Player<SDL_Surface, SDL_Texture, SDL_Renderer, SDL_Rect >::LoadPlayerFrames
         std::string currentFrontWalkAnim = frontWalkAnimName;
         currentFrontWalkAnim.append(std::to_string(frontWalkFrame));
         currentFrontWalkAnim.append(extension);
-        frontAnimWalkFrameTexture[frontWalkFrame] = IMG_LoadTexture(renderer, currentFrontWalkAnim.c_str());
+        frontAnimWalkFrameSurface[arrCounter] = IMG_Load(currentFrontWalkAnim.c_str());
         frontWalkFrame++;
+        arrCounter++;
     }
+
+    arrCounter = 0;
 
 //    Load Back Anim Idle
     backAnimIdleFrameTexture = IMG_LoadTexture(renderer, backIdleAnimName.c_str());
@@ -53,9 +60,12 @@ void Player<SDL_Surface, SDL_Texture, SDL_Renderer, SDL_Rect >::LoadPlayerFrames
         std::string currentBackWalkAnim = backWalkAnimName;
         currentBackWalkAnim.append(std::to_string(backWalkFrame));
         currentBackWalkAnim.append(extension);
-        backAnimWalkFrameTexture[backWalkFrame] = IMG_LoadTexture(renderer, currentBackWalkAnim.c_str());
+        backAnimWalkFrameSurface[arrCounter] = IMG_Load(currentBackWalkAnim.c_str());
         backWalkFrame++;
+        arrCounter++;
     }
+
+    arrCounter = 0;
 
 //    Load Side Anim Idle
     while (sideIdleFrame < 10)
@@ -63,9 +73,12 @@ void Player<SDL_Surface, SDL_Texture, SDL_Renderer, SDL_Rect >::LoadPlayerFrames
         std::string currentSideIdleAnim = sideIdleAnimName;
         currentSideIdleAnim.append(std::to_string(sideIdleFrame));
         currentSideIdleAnim.append(extension);
-        sideAnimIdleFrameTexture[sideIdleFrame] = IMG_LoadTexture(renderer, currentSideIdleAnim.c_str());
+        sideAnimIdleFrameSurface[arrCounter] = IMG_Load(currentSideIdleAnim.c_str());
         sideIdleFrame++;
+        arrCounter++;
     }
+
+    arrCounter = 0;
 
 //    Load Side Anim Walk
     while (sideWalkFrame < 19)
@@ -73,23 +86,42 @@ void Player<SDL_Surface, SDL_Texture, SDL_Renderer, SDL_Rect >::LoadPlayerFrames
         std::string currentSideWalkAnim = sideWalkAnimName;
         currentSideWalkAnim.append(std::to_string(sideWalkFrame));
         currentSideWalkAnim.append(extension);
-        sideAnimIdleFrameTexture[sideWalkFrame] = IMG_LoadTexture(renderer, currentSideWalkAnim.c_str());
+        sideAnimIdleFrameSurface[arrCounter] = IMG_Load(currentSideWalkAnim.c_str());
         sideWalkFrame++;
+        arrCounter++;
     }
 
+    arrCounter = 0;
     areTexturesLoaded = true;
 }
 
 template<>
-void Player<SDL_Surface, SDL_Texture, SDL_Renderer, SDL_Rect>::PlayerAnimation(SDL_Surface *surface, SDL_Texture *texture)
+void Player<SDL_Surface, SDL_Texture, SDL_Renderer>::PlayerAnimation(SDL_Renderer *renderer)
 {
     switch (currentPlayerState)
     {
         case idleFront:
-            if (frontIdleCounter < 30)
+            if (frontIdleCounter < 30 && animClock == 15)
             {
+                frontAnimIdleFrameSurface[0]->w = static_cast<int>(frontAnimIdleFrameSurface[0]->w * 0.2f);
+                frontAnimIdleFrameSurface[0]->h = static_cast<int>(frontAnimIdleFrameSurface[0]->h * 0.2f);
+                SDL_Rect frameHolder = {playerX,
+                                        playerY,
+                                        frontAnimIdleFrameSurface[0]->w,
+                                        frontAnimIdleFrameSurface[0]->h
+                                        };
 
+                frameTexture = SDL_CreateTextureFromSurface(renderer, frontAnimIdleFrameSurface[0]);
+
+                SDL_RenderCopy(renderer,
+                               frameTexture,
+                               nullptr,
+                               &frameHolder);
+                animClock = 0;
+                frontIdleCounter++;
             }
+
+            animClock++;
             break;
 
         case walkFront:
@@ -134,6 +166,19 @@ void Game::LoadMainMenuBackground()
     }
 }
 
+void Game::UnloadMainMenuElements()
+{
+    int unloadCounter = 0;
+
+    while (unloadCounter < menuBG.size())
+    {
+        SDL_FreeSurface(menuBG[unloadCounter]);
+        unloadCounter++;
+    }
+
+    hasMainMenuBGLoaded = false;
+}
+
 void Game::ShowMenuBackground(int frame)
 {
     SDL_Texture *currentFrame = SDL_CreateTextureFromSurface(renderer, menuBG[frame]);
@@ -153,7 +198,6 @@ void Game::ShowMenuBackground(int frame)
 
 void Game::StartMenu()
 {
-
     menuFont = TTF_OpenFont("../Fonts/Aller_Rg.ttf", 35);
 
     SDL_Rect menuHolder = {static_cast<int>((float)screenWidth * 0.1f),
@@ -387,8 +431,6 @@ Game::Game()
                                 break;
                             }
 
-                            break;
-
                         case SDLK_UP:
                             if (currState == gamePlay)
                             {
@@ -415,6 +457,7 @@ Game::Game()
                             if (currState == mainMenu && currMainMenuSelection == startSelected)
                             {
                                 currState = gamePlay;
+                                UnloadMainMenuElements();
                                 break;
                             }
 
@@ -428,6 +471,7 @@ Game::Game()
                             if (currState == mainMenu && currMainMenuSelection == startSelected)
                             {
                                 currState = gamePlay;
+                                UnloadMainMenuElements();
                                 break;
                             }
                     }
@@ -456,7 +500,7 @@ Game::Game()
                 {
                     ShowMenuBackground(currentBGFrame);
 
-                    if (nextFrameClock == 20)
+                    if (nextFrameClock == 15)
                     {
                         currentBGFrame++;
                         nextFrameClock = 0;
@@ -479,6 +523,10 @@ Game::Game()
 
 
             case gamePlay:
+                if (player.hasLoadedTextures())
+                {
+
+                }
                 break;
 
             case gamePaused:
