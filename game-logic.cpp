@@ -111,8 +111,8 @@ void Player<SDL_Surface, SDL_Texture, SDL_Renderer>::PlayerAnimation(SDL_Rendere
             if (animClock < 500) {
                 frameHolder = {static_cast<int>(playerX),
                                static_cast<int>(playerY),
-                               static_cast<int>(frontAnimIdleFrameSurface[curAnim]->w * 0.2f),
-                               static_cast<int>(frontAnimIdleFrameSurface[curAnim]->h * 0.2f)};
+                               static_cast<int>((float)frontAnimIdleFrameSurface[curAnim]->w * 0.2f),
+                               static_cast<int>((float)frontAnimIdleFrameSurface[curAnim]->h * 0.2f)};
 
                 frameTexture = SDL_CreateTextureFromSurface(renderer, frontAnimIdleFrameSurface[curAnim]);
 
@@ -135,8 +135,8 @@ void Player<SDL_Surface, SDL_Texture, SDL_Renderer>::PlayerAnimation(SDL_Rendere
                 {
                     frameHolder = {static_cast<int>(playerX),
                                    static_cast<int>(playerY),
-                                   static_cast<int>(frontAnimIdleFrameSurface[curAnim]->w * 0.2f),
-                                   static_cast<int>(frontAnimIdleFrameSurface[curAnim]->h * 0.2f)};
+                                   static_cast<int>((float)frontAnimIdleFrameSurface[curAnim]->w * 0.2f),
+                                   static_cast<int>((float)frontAnimIdleFrameSurface[curAnim]->h * 0.2f)};
 
                     frameTexture = SDL_CreateTextureFromSurface(renderer, frontAnimIdleFrameSurface[curAnim]);
 
@@ -150,8 +150,8 @@ void Player<SDL_Surface, SDL_Texture, SDL_Renderer>::PlayerAnimation(SDL_Rendere
 
                 frameHolder = {static_cast<int>(playerX),
                                static_cast<int>(playerY),
-                               static_cast<int>(frontAnimIdleFrameSurface[curAnim]->w * 0.2f),
-                               static_cast<int>(frontAnimIdleFrameSurface[curAnim]->h * 0.2f)};
+                               static_cast<int>((float)frontAnimIdleFrameSurface[curAnim]->w * 0.2f),
+                               static_cast<int>((float)frontAnimIdleFrameSurface[curAnim]->h * 0.2f)};
 
                 frameTexture = SDL_CreateTextureFromSurface(renderer, frontAnimIdleFrameSurface[curAnim]);
 
@@ -192,7 +192,7 @@ void Game::LoadMainMenuBackground()
 {
     int currentFrame = 1, counter = 0;
 
-    while (counter < 17)
+    while (counter < 16)
     {
         std::string extension = ".png";
         std::string frameName = "../Graphics/Main Menu Background/Main_Menu_BG_-";
@@ -521,8 +521,8 @@ Game::Game()
                             {
                                 currState = gamePlay;
                                 UnloadMainMenuElements();
-                                player.playerX = screenWidth/2;
-                                player.playerY = screenHeight/2;
+                                player.playerX = (float)screenWidth/2;
+                                player.playerY = (float)screenHeight/2;
                                 std::cin.get();
 
                                 break;
