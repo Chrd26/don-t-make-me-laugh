@@ -331,6 +331,9 @@ don_t_make_me_laugh_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 don_t_make_me_laugh_SOURCE_DIR:STATIC=/Users/chrisd/Desktop/don-t-make-me-laugh
 
+//The directory containing a CMake configuration file for sdl2-gfx.
+sdl2-gfx_DIR:PATH=/Users/chrisd/.vcpkg-clion/jumping_physics_packages/installed/x64-osx/share/sdl2-gfx
+
 
 ########################
 # INTERNAL cache entries

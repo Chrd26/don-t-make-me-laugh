@@ -1,9 +1,11 @@
 #pragma  once
 #include <iostream>
-#include <SDL.h>
-#include <SDL_ttf.h>
-#include "player-header.h"
+#include "SDL.h"
+#include "SDL_ttf.h"
 #include "SDL_image.h"
+#include "SDL2_gfxPrimitives.h"
+#include "SDL2_gfxPrimitives_font.h"
+#include "player-header.h"
 #include <string>
 
 #define screenWidth 1280

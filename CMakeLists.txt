@@ -22,3 +22,6 @@ target_link_libraries(don_t_make_me_laugh
 find_package(SDL2_image CONFIG REQUIRED)
 target_link_libraries(don_t_make_me_laugh
         PRIVATE $<IF:$<TARGET_EXISTS:SDL2_image::SDL2_image>,SDL2_image::SDL2_image,SDL2_image::SDL2_image-static>)
+
+find_package(sdl2-gfx CONFIG REQUIRED)
+target_link_libraries(don_t_make_me_laugh PRIVATE SDL2::SDL2_gfx)
