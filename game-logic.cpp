@@ -1,6 +1,71 @@
 #include "game.h"
 
 template<>
+Player<SDL_Surface, SDL_Texture, SDL_Renderer >::~Player()
+{
+    for (int i = 0; i < frontAnimIdleFrameSurface.size(); i++)
+    {
+        if (frontAnimIdleFrameSurface[i] == nullptr)
+        {
+            break;
+        }
+
+        SDL_FreeSurface(frontAnimIdleFrameSurface[i]);
+    }
+
+    for (int j = 0; j < frontAnimWalkFrameSurface.size(); j++)
+    {
+        if (frontAnimWalkFrameSurface[j] == nullptr)
+        {
+            break;
+        }
+
+        SDL_FreeSurface(frontAnimWalkFrameSurface[j]);
+    }
+
+    for (int k = 0; k < backAnimWalkFrameSurface.size(); k++)
+    {
+        if (backAnimWalkFrameSurface[k] == nullptr)
+        {
+            break;
+        }
+
+        SDL_FreeSurface(backAnimWalkFrameSurface[k]);
+    }
+
+    for (int l = 0; l < sideAnimIdleFrameSurface.size(); l++)
+    {
+        if (sideAnimIdleFrameSurface[l] == nullptr)
+        {
+            break;
+        }
+
+        SDL_FreeSurface(sideAnimIdleFrameSurface[l]);
+    }
+
+    for (int m = 0; m < sideAnimWalkFrameSurface.size(); m++)
+    {
+        if (sideAnimWalkFrameSurface[m] == nullptr)
+        {
+            break;
+        }
+
+        SDL_FreeSurface(sideAnimWalkFrameSurface[m]);
+    }
+
+    if (frameTexture != nullptr)
+    {
+        SDL_DestroyTexture(frameTexture);
+    }
+
+    if (backAnimIdleFrameSurface != nullptr)
+    {
+        SDL_FreeSurface(backAnimIdleFrameSurface);
+    }
+}
+
+
+template<>
 bool Player<SDL_Surface, SDL_Texture, SDL_Renderer>::hasLoadedTextures() const
 {
     return areTexturesLoaded;
@@ -57,7 +122,7 @@ void Player<SDL_Surface, SDL_Texture, SDL_Renderer>::LoadPlayerFrames(SDL_Render
     arrCounter = 0;
 
 //    Load Back Anim Idle
-    backAnimIdleFrameTexture = IMG_LoadTexture(renderer, backIdleAnimName.c_str());
+    backAnimIdleFrameSurface = IMG_Load(backIdleAnimName.c_str());
 
 //    Load Back Anim Walk
     while (backWalkFrame < 5)
@@ -417,6 +482,16 @@ Game::~Game()
     font = nullptr;
     window = nullptr;
     renderer = nullptr;
+
+    if (currState == mainMenu)
+    {
+        UnloadMainMenuElements();
+    }
+
+    if (currState == gamePlay)
+    {
+
+    }
 }
 
 

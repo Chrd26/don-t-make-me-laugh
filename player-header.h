@@ -23,7 +23,7 @@ private:
     int currentPlayerState;
     std::array<S*, 11> frontAnimIdleFrameSurface;
     std::array<S*, 17> frontAnimWalkFrameSurface;
-    T* backAnimIdleFrameTexture = nullptr;
+    S* backAnimIdleFrameSurface = nullptr;
     std::array <S*, 4> backAnimWalkFrameSurface;
     std::array <S*, 9> sideAnimIdleFrameSurface;
     std::array <S*, 18> sideAnimWalkFrameSurface;
@@ -35,12 +35,12 @@ private:
 public:
     float playerX = 0, playerY = 0;
     bool areTexturesLoaded = false;
+    ~Player();
 
 public:
     virtual void PlayerAnimation(R *renderer);
     virtual void StateSetter(int state);
     virtual void LoadPlayerFrames(R *renderer);
-    //virtual void unloadPlayerFrames();
 
 //     This is a static function because it is
 //      already defined, use static to declare it
