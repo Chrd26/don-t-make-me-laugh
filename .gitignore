@@ -32,4 +32,5 @@
 *.out
 *.app
 
-/Graphics
+Graphics/
+cmake-build-debug/
