@@ -3,54 +3,54 @@
 template<>
 Player<SDL_Surface, SDL_Texture, SDL_Renderer >::~Player()
 {
-    for (int i = 0; i < frontAnimIdleFrameSurface.size(); i++)
+    for (auto &i : frontAnimIdleFrameSurface)
     {
-        if (frontAnimIdleFrameSurface[i] == nullptr)
+        if (i == nullptr)
         {
             break;
         }
 
-        SDL_FreeSurface(frontAnimIdleFrameSurface[i]);
+        SDL_FreeSurface(i);
     }
 
-    for (int j = 0; j < frontAnimWalkFrameSurface.size(); j++)
+    for (auto &j : frontAnimWalkFrameSurface)
     {
-        if (frontAnimWalkFrameSurface[j] == nullptr)
+        if (j == nullptr)
         {
             break;
         }
 
-        SDL_FreeSurface(frontAnimWalkFrameSurface[j]);
+        SDL_FreeSurface(j);
     }
 
-    for (int k = 0; k < backAnimWalkFrameSurface.size(); k++)
+    for (auto &k : backAnimWalkFrameSurface)
     {
-        if (backAnimWalkFrameSurface[k] == nullptr)
+        if (k == nullptr)
         {
             break;
         }
 
-        SDL_FreeSurface(backAnimWalkFrameSurface[k]);
+        SDL_FreeSurface(k);
     }
 
-    for (int l = 0; l < sideAnimIdleFrameSurface.size(); l++)
+    for (auto &l : sideAnimIdleFrameSurface)
     {
-        if (sideAnimIdleFrameSurface[l] == nullptr)
+        if (l == nullptr)
         {
             break;
         }
 
-        SDL_FreeSurface(sideAnimIdleFrameSurface[l]);
+        SDL_FreeSurface(l);
     }
 
-    for (int m = 0; m < sideAnimWalkFrameSurface.size(); m++)
+    for (auto &m : sideAnimWalkFrameSurface)
     {
-        if (sideAnimWalkFrameSurface[m] == nullptr)
+        if (m == nullptr)
         {
             break;
         }
 
-        SDL_FreeSurface(sideAnimWalkFrameSurface[m]);
+        SDL_FreeSurface(m);
     }
 
     if (frameTexture != nullptr)
@@ -315,66 +315,47 @@ void Game::StartMenu()
                               300,
                               100};
 
-    SDL_SetRenderDrawColor(renderer,
-                           0x00,
-                           0x00,
-                           0x00,
-                           0xFF);
+    SDL_SetRenderDrawColor(renderer, 0x00, 0x00,
+                           0x00, 0xFF);
     SDL_RenderFillRect(renderer,
                        &menuHolderFill);
 
-    SDL_SetRenderDrawColor(renderer,
-                           0xFF,
-                           0xFF,
-                           0xFF,
-                           0xFF);
-    SDL_RenderDrawRect(renderer,
-                       &menuHolder);
+    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF,
+                           0xFF, 0xFF);
+    SDL_RenderDrawRect(renderer, &menuHolder);
 
     SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
     SDL_Rect startButton = {static_cast<int>((float)screenWidth * 0.12f),
                             static_cast<int>((float)screenHeight * 0.85f),
-                            0,
-                            0};
+                            0, 0};
     SDL_Rect exitButton = {static_cast<int>((float)screenWidth * 0.25f),
                             static_cast<int>((float)screenHeight * 0.85f),
-                            0,
-                            0};
+                            0, 0};
 
-    SDL_Color selectedColor = {0x00,
-                               0xFF,
-                               0x00};
-    SDL_Color unselectedColor = {0xFF,
-                                 0xFF,
-                                 0xFF};
+    SDL_Color selectedColor = {0x00, 0xFF, 0x00};
+    SDL_Color unselectedColor = {0xFF, 0xFF, 0xFF};
 
     switch (currMainMenuSelection)
     {
         case startSelected:
-            startGameSurface = TTF_RenderText_Solid(menuFont,
-                                                    "Start",
+            startGameSurface = TTF_RenderText_Solid(menuFont, "Start",
                                                     selectedColor);
             startButton.h = startGameSurface->h;
             startButton.w = startGameSurface->w;
             startGameTexture = SDL_CreateTextureFromSurface(renderer,
                                                             startGameSurface);
 
-            exitGameSurface = TTF_RenderText_Solid(menuFont,
-                                                    "Exit",
+            exitGameSurface = TTF_RenderText_Solid(menuFont, "Exit",
                                                     unselectedColor);
             exitButton.h = exitGameSurface->h;
             exitButton.w = exitGameSurface->w;
             exitGameTexture = SDL_CreateTextureFromSurface(renderer,
                                                            exitGameSurface);
 
-            SDL_RenderCopy(renderer,
-                           exitGameTexture,
-                           nullptr,
+            SDL_RenderCopy(renderer, exitGameTexture, nullptr,
                            &exitButton);
 
-            SDL_RenderCopy(renderer,
-                           startGameTexture,
-                           nullptr,
+            SDL_RenderCopy(renderer, startGameTexture, nullptr,
                            &startButton);
 
             SDL_FreeSurface(startGameSurface);
@@ -392,30 +373,24 @@ void Game::StartMenu()
             break;
 
         case exitSelected:
-            startGameSurface = TTF_RenderText_Solid(menuFont,
-                                                    "Start",
+            startGameSurface = TTF_RenderText_Solid(menuFont, "Start",
                                                     unselectedColor);
             startButton.h = startGameSurface->h;
             startButton.w = startGameSurface->w;
             startGameTexture = SDL_CreateTextureFromSurface(renderer,
                                                             startGameSurface);
 
-            exitGameSurface = TTF_RenderText_Solid(menuFont,
-                                                   "Exit",
+            exitGameSurface = TTF_RenderText_Solid(menuFont, "Exit",
                                                    selectedColor);
             exitButton.h = exitGameSurface->h;
             exitButton.w = exitGameSurface->w;
             exitGameTexture = SDL_CreateTextureFromSurface(renderer,
                                                            exitGameSurface);
 
-            SDL_RenderCopy(renderer,
-                           exitGameTexture,
-                           nullptr,
+            SDL_RenderCopy(renderer, exitGameTexture, nullptr,
                            &exitButton);
 
-            SDL_RenderCopy(renderer,
-                           startGameTexture,
-                           nullptr,
+            SDL_RenderCopy(renderer, startGameTexture, nullptr,
                            &startButton);
 
             SDL_FreeSurface(startGameSurface);
@@ -443,12 +418,9 @@ bool Game::GameInit()
     }
 
 //    Set up window
-    window = SDL_CreateWindow("Don't make me laugh",
-                              SDL_WINDOWPOS_CENTERED,
-                              SDL_WINDOWPOS_CENTERED,
-                              screenWidth,
-                              screenHeight,
-                              SDL_WINDOW_SHOWN);
+    window = SDL_CreateWindow("Don't make me laugh", SDL_WINDOWPOS_CENTERED,
+                              SDL_WINDOWPOS_CENTERED, screenWidth,
+                              screenHeight, SDL_WINDOW_SHOWN);
 
 //    Set up Font
     font = TTF_OpenFont("../Fonts/Aller_Rg.ttf", 20);
@@ -535,8 +507,6 @@ Game::Game()
                                 break;
                             }
 
-                            break;
-
                         case SDLK_RIGHT:
                             if (currState == mainMenu)
                             {
@@ -608,11 +578,8 @@ Game::Game()
             }
         }
 
-        SDL_SetRenderDrawColor(renderer,
-                               0x00,
-                               0x00,
-                               0x00,
-                               0x00);
+        SDL_SetRenderDrawColor(renderer, 0x00, 0x00,
+                               0x00, 0x00);
         SDL_RenderClear(renderer);
 
         switch (currState)
